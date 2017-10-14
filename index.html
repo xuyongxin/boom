@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	body{
+		background-color: #252A34;
+	}
+	#main{
+		width: 640px;
+		height: 400px;
+		margin: 100px auto 0;
+		transform-style: preserve-3d;
+		perspective: 800px;
+	}
+	#main>div{
+		position: absolute;	
+	}
+	</style>
+</head>
+<body>
+	<div id="main"></div>
+
+	<script type="text/javascript">
+		//随机函数
+		function rand(m,n){
+			return parseInt(Math.random() * (n - m + 1) + m);
+		}
+
+		var oMain = document.getElementById('main');
+
+		//创建div，实现boom
+		boom(10,16);
+		function boom(m,n){
+			var x = m;
+			var y = n;
+			for (var i = 0; i < x; i++) {
+				for (var j = 0; j < y; j++) {
+					var oDiv = document.createElement('div');
+
+					var divWidth = oMain.clientWidth / y;
+					var divHeight = oMain.clientHeight / x;
+
+					oDiv.style.width = divWidth + 'px';
+					oDiv.style.height = divHeight + 'px';
+
+					oDiv.style.left = divWidth * j + 'px';
+					oDiv.style.top = divHeight * i + 'px';
+
+					//div的背景图片
+					oDiv.style.background = 'url(2.jpg)';
+					// 背景图片的位置
+					oDiv.style.backgroundPositionX = divWidth * -j + 'px';
+					oDiv.style.backgroundPositionY = divHeight * -i + 'px';
+
+
+
+					oDiv.style.transition = 'all '+ rand(0.5,1.5)+'s ease';
+					oMain.appendChild(oDiv);
+				}
+			};
+
+			var allDiv = oMain.children;
+			for (var i = 0; i < allDiv.length; i++) {
+				
+				// 每个div的动画，boom
+				allDiv[i].style.transform = 'scale('+rand(1.5,0.5)+') rotateX('+rand(-180,180)+'deg) rotateY('+rand(-180,180)+'deg) translateX('+rand(-200,200)+'px) translateY('+rand(-200,200)+'px) translateZ('+rand(100,100)+'px)';
+				allDiv[i].style.borderRadius = '50%';
+			}
+
+			setTimeout(function(){
+				for (var i = 0; i < allDiv.length; i++) {
+					// 每个div复原到原来的位置
+					allDiv[i].style.transform = 'rotateX(0deg) rotateY(0deg) translateX(0px) translateY(0px) translateZ(0px)';
+					allDiv[i].style.borderRadius = '0%';
+				}
+			},2000);
+		}
+		
+	</script>
+</body>
+</html>
